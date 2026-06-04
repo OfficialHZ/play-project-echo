@@ -2,7 +2,9 @@ using Godot;
 
 public partial class Player : CharacterBody3D
 {
-	private const float Speed = 5.0f;
+	private const float WalkSpeed = 5.0f;
+	private const float SprintSpeed = 8.0f;
+	private const float JumpVelocity = 7.0f;
 	private const float Gravity = 20.0f;
 	private const float MouseSensitivity = 0.0025f;
 
@@ -17,12 +19,25 @@ public partial class Player : CharacterBody3D
 
 	public override void _Input(InputEvent @event)
 	{
+		// Release mouse with ESC
 		if (@event.IsActionPressed("ui_cancel"))
 		{
 			Input.MouseMode = Input.MouseModeEnum.Visible;
 		}
 
-		if (@event is InputEventMouseMotion mouseMotion)
+		// Capture mouse with Left Click
+		if (@event is InputEventMouseButton mouseButton)
+		{
+			if (mouseButton.Pressed &&
+				mouseButton.ButtonIndex == MouseButton.Left)
+			{
+				Input.MouseMode = Input.MouseModeEnum.Captured;
+			}
+		}
+
+		// Camera movement
+		if (@event is InputEventMouseMotion mouseMotion &&
+			Input.MouseMode == Input.MouseModeEnum.Captured)
 		{
 			RotateY(-mouseMotion.Relative.X * MouseSensitivity);
 
@@ -46,11 +61,27 @@ public partial class Player : CharacterBody3D
 	{
 		Vector3 velocity = Velocity;
 
+		// Gravity
 		if (!IsOnFloor())
 		{
 			velocity.Y -= Gravity * (float)delta;
 		}
 
+		// Jump
+		if (Input.IsActionJustPressed("jump") && IsOnFloor())
+		{
+			velocity.Y = JumpVelocity;
+		}
+
+		// Sprint
+		float currentSpeed = WalkSpeed;
+
+		if (Input.IsActionPressed("sprint"))
+		{
+			currentSpeed = SprintSpeed;
+		}
+
+		// Movement Input
 		Vector2 input = Input.GetVector(
 			"move_left",
 			"move_right",
@@ -58,12 +89,13 @@ public partial class Player : CharacterBody3D
             "move_backward"
 		);
 
+		// Move relative to player's rotation
 		Vector3 direction =
 			Transform.Basis *
 			new Vector3(input.X, 0, input.Y);
 
-		velocity.X = direction.X * Speed;
-		velocity.Z = direction.Z * Speed;
+		velocity.X = direction.X * currentSpeed;
+		velocity.Z = direction.Z * currentSpeed;
 
 		Velocity = velocity;
 
