@@ -7,6 +7,7 @@ public partial class Player : CharacterBody3D
 	private const float JumpVelocity = 7.0f;
 	private const float Gravity = 20.0f;
 	private const float MouseSensitivity = 0.0025f;
+	private RayCast3D _interactRay;
 
 	private Node3D _cameraPivot;
 
@@ -15,6 +16,8 @@ public partial class Player : CharacterBody3D
 		Input.MouseMode = Input.MouseModeEnum.Captured;
 
 		_cameraPivot = GetNode<Node3D>("CameraPivot");
+
+		_interactRay = GetNode<RayCast3D>("CameraPivot/Camera3D/InteractRay");
 	}
 
 	public override void _Input(InputEvent @event)
@@ -28,32 +31,41 @@ public partial class Player : CharacterBody3D
 		// Capture mouse with Left Click
 		if (@event is InputEventMouseButton mouseButton)
 		{
-			if (mouseButton.Pressed &&
-				mouseButton.ButtonIndex == MouseButton.Left)
+			if (mouseButton.Pressed && mouseButton.ButtonIndex == MouseButton.Left)
 			{
 				Input.MouseMode = Input.MouseModeEnum.Captured;
 			}
 		}
 
 		// Camera movement
-		if (@event is InputEventMouseMotion mouseMotion &&
-			Input.MouseMode == Input.MouseModeEnum.Captured)
+		if (
+			@event is InputEventMouseMotion mouseMotion
+			&& Input.MouseMode == Input.MouseModeEnum.Captured
+		)
 		{
 			RotateY(-mouseMotion.Relative.X * MouseSensitivity);
 
-			_cameraPivot.RotateX(
-				-mouseMotion.Relative.Y * MouseSensitivity
-			);
+			_cameraPivot.RotateX(-mouseMotion.Relative.Y * MouseSensitivity);
 
 			Vector3 rotation = _cameraPivot.Rotation;
 
-			rotation.X = Mathf.Clamp(
-				rotation.X,
-				Mathf.DegToRad(-89),
-				Mathf.DegToRad(89)
-			);
+			rotation.X = Mathf.Clamp(rotation.X, Mathf.DegToRad(-89), Mathf.DegToRad(89));
 
 			_cameraPivot.Rotation = rotation;
+		}
+
+		if (@event.IsActionPressed("interact"))
+		{
+			if (_interactRay.IsColliding())
+			{
+				Node collider =
+					_interactRay.GetCollider() as Node;
+
+				if (collider is Interactable interactable)
+				{
+					interactable.Interact();
+				}
+			}
 		}
 	}
 
@@ -82,17 +94,10 @@ public partial class Player : CharacterBody3D
 		}
 
 		// Movement Input
-		Vector2 input = Input.GetVector(
-			"move_left",
-			"move_right",
-			"move_forward",
-            "move_backward"
-		);
+		Vector2 input = Input.GetVector("move_left", "move_right", "move_forward", "move_backward");
 
 		// Move relative to player's rotation
-		Vector3 direction =
-			Transform.Basis *
-			new Vector3(input.X, 0, input.Y);
+		Vector3 direction = Transform.Basis * new Vector3(input.X, 0, input.Y);
 
 		velocity.X = direction.X * currentSpeed;
 		velocity.Z = direction.Z * currentSpeed;

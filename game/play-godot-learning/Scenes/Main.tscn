@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://diot7ufk44l25"]
 
 [ext_resource type="PackedScene" uid="uid://c6e7ru0mp3wmf" path="res://Scenes/Player.tscn" id="1_r150o"]
+[ext_resource type="Script" uid="uid://c4xlh6nogw5os" path="res://Scripts/Interactable.cs" id="2_idj7w"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_c1w88"]
 
@@ -16,6 +17,10 @@ size = Vector3(20, 1, 20)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_kln2b"]
 size = Vector3(20, 1, 20)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_idj7w"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_kln2b"]
 
 [node name="Main" type="Node3D" unique_id=119283408]
 
@@ -35,3 +40,14 @@ shape = SubResource("BoxShape3D_kln2b")
 
 [node name="Player" parent="." unique_id=1000247141 instance=ExtResource("1_r150o")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 0)
+
+[node name="InteractCube" type="StaticBody3D" parent="." unique_id=267952134]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, -5)
+script = ExtResource("2_idj7w")
+
+[node name="BoxShape3D" type="CollisionShape3D" parent="InteractCube" unique_id=637689305]
+shape = SubResource("BoxShape3D_idj7w")
+debug_color = Color(0.0034570473, 0.0014816531, 0, 0.41960785)
+
+[node name="BoxMesh" type="MeshInstance3D" parent="InteractCube" unique_id=802275004]
+mesh = SubResource("BoxMesh_kln2b")
