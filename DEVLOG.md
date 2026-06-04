@@ -12,3 +12,7 @@
 - Added directional lighting
 - Configured world environment
 - Established project folder structure
+- Created Player scene
+- Added gravity
+- Fixed floor collision using StaticBody3D
+- Player now falls and lands correctly
