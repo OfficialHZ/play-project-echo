@@ -1,6 +1,6 @@
 using Godot;
 
-public partial class Interactable : StaticBody3D
+public partial class Interactable : StaticBody3D, IInteractable
 {
 	public void Interact()
 	{

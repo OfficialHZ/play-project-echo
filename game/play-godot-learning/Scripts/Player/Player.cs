@@ -61,7 +61,7 @@ public partial class Player : CharacterBody3D
 				Node collider =
 					_interactRay.GetCollider() as Node;
 
-				if (collider is Interactable interactable)
+				if (collider is IInteractable interactable)
 				{
 					interactable.Interact();
 				}
