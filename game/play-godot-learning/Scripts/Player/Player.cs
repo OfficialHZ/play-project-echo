@@ -8,8 +8,8 @@ public partial class Player : CharacterBody3D
 	private const float Gravity = 20.0f;
 	private const float MouseSensitivity = 0.0025f;
 	private RayCast3D _interactRay;
-
 	private Node3D _cameraPivot;
+	private Label _interactionLabel;
 
 	public override void _Ready()
 	{
@@ -18,6 +18,10 @@ public partial class Player : CharacterBody3D
 		_cameraPivot = GetNode<Node3D>("CameraPivot");
 
 		_interactRay = GetNode<RayCast3D>("CameraPivot/Camera3D/InteractRay");
+
+		_interactionLabel = GetTree().Root.GetNode<Label>(
+			"Main/CanvasLayer/InteractionLabel"
+		);
 	}
 
 	public override void _Input(InputEvent @event)
@@ -91,6 +95,20 @@ public partial class Player : CharacterBody3D
 		if (Input.IsActionPressed("sprint"))
 		{
 			currentSpeed = SprintSpeed;
+		}
+
+		// Interaction Detection
+		if (_interactRay.IsColliding())
+		{
+			Node collider =
+				_interactRay.GetCollider() as Node;
+
+			_interactionLabel.Visible =
+				collider is IInteractable;
+		}
+		else
+		{
+			_interactionLabel.Visible = false;
 		}
 
 		// Movement Input

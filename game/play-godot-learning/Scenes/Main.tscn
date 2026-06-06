@@ -23,6 +23,8 @@ size = Vector3(20, 1, 20)
 
 [sub_resource type="BoxMesh" id="BoxMesh_kln2b"]
 
+[sub_resource type="LabelSettings" id="LabelSettings_kln2b"]
+
 [node name="Main" type="Node3D" unique_id=119283408]
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=2111910417]
@@ -55,3 +57,15 @@ mesh = SubResource("BoxMesh_kln2b")
 
 [node name="StaticBody3D" parent="." unique_id=216997868 instance=ExtResource("3_kln2b")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.6, -8)
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1465454837]
+
+[node name="InteractionLabel" type="Label" parent="CanvasLayer" unique_id=1982109053]
+offset_left = 558.0
+offset_top = 326.0
+offset_right = 613.0
+offset_bottom = 349.0
+text = "Press E"
+label_settings = SubResource("LabelSettings_kln2b")
+horizontal_alignment = 1
+vertical_alignment = 1
