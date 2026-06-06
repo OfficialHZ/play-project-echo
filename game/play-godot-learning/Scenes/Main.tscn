@@ -5,6 +5,7 @@
 [ext_resource type="Script" uid="uid://c4xlh6nogw5os" path="res://Scripts/Interactables/Interactable.cs" id="2_kln2b"]
 [ext_resource type="PackedScene" uid="uid://c6dq7wyy0hod" path="res://Scenes/Interactable/Door.tscn" id="3_kln2b"]
 [ext_resource type="PackedScene" uid="uid://dqq6kglv28lsc" path="res://Scenes/Interactable/Scrap.tscn" id="4_rgh2o"]
+[ext_resource type="Script" uid="uid://cl1xsqrkdnhxa" path="res://Scripts/ExitZone.cs" id="6_v1gob"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_c1w88"]
 
@@ -26,6 +27,10 @@ size = Vector3(20, 1, 20)
 [sub_resource type="BoxMesh" id="BoxMesh_kln2b"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_kln2b"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_pbw6q"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_v1gob"]
 
 [node name="Main" type="Node3D" unique_id=119283408]
 
@@ -75,6 +80,13 @@ label_settings = SubResource("LabelSettings_kln2b")
 horizontal_alignment = 1
 vertical_alignment = 1
 
+[node name="ScrapCounter" type="Label" parent="CanvasLayer" unique_id=956381397]
+offset_left = 27.0
+offset_top = 18.0
+offset_right = 88.0
+offset_bottom = 41.0
+text = "Scrap: 0"
+
 [node name="Scrap" parent="." unique_id=491219669 instance=ExtResource("4_rgh2o")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 1, -5)
 
@@ -83,3 +95,13 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 1, -8)
 
 [node name="Scrap3" parent="." unique_id=1305992128 instance=ExtResource("4_rgh2o")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 1, -8)
+
+[node name="ExitZone" type="Area3D" parent="." unique_id=782920983]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 1, 0)
+script = ExtResource("6_v1gob")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="ExitZone" unique_id=71989689]
+shape = SubResource("BoxShape3D_pbw6q")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="ExitZone" unique_id=469780959]
+mesh = SubResource("BoxMesh_v1gob")

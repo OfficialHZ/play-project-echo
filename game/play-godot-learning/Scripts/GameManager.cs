@@ -6,15 +6,30 @@ public partial class GameManager : Node
 
 	public int ScrapCollected = 0;
 
+	private Label _scrapCounter;
+
 	public override void _Ready()
 	{
 		Instance = this;
+
+		_scrapCounter =
+			GetNode<Label>(
+                "../CanvasLayer/ScrapCounter"
+			);
+
+		UpdateUI();
 	}
 
 	public void AddScrap()
 	{
 		ScrapCollected++;
 
-		GD.Print($"Scrap: {ScrapCollected}");
+		UpdateUI();
+	}
+
+	private void UpdateUI()
+	{
+		_scrapCounter.Text =
+			$"Scrap: {ScrapCollected}";
 	}
 }
