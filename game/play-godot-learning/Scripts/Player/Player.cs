@@ -10,6 +10,7 @@ public partial class Player : CharacterBody3D
 	private RayCast3D _interactRay;
 	private Node3D _cameraPivot;
 	private Label _interactionLabel;
+	private SpotLight3D _flashlight;
 
 	public override void _Ready()
 	{
@@ -19,9 +20,11 @@ public partial class Player : CharacterBody3D
 
 		_interactRay = GetNode<RayCast3D>("CameraPivot/Camera3D/InteractRay");
 
-		_interactionLabel = GetTree().Root.GetNode<Label>(
-			"Main/CanvasLayer/InteractionLabel"
-		);
+		_interactionLabel = GetTree().Root.GetNode<Label>("Main/CanvasLayer/InteractionLabel");
+
+		_flashlight = GetNode<SpotLight3D>("CameraPivot/Camera3D/Flashlight");
+
+		_flashlight.Visible = false;
 	}
 
 	public override void _Input(InputEvent @event)
@@ -70,6 +73,12 @@ public partial class Player : CharacterBody3D
 					interactable.Interact();
 				}
 			}
+		}
+		
+		if (@event.IsActionPressed("flashlight"))
+		{
+			_flashlight.Visible =
+				!_flashlight.Visible;
 		}
 	}
 
