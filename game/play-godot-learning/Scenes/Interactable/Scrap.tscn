@@ -1,0 +1,16 @@
+[gd_scene format=3 uid="uid://dqq6kglv28lsc"]
+
+[ext_resource type="Script" uid="uid://igdabr2cmfpq" path="res://Scripts/Interactables/Scrap.cs" id="1_ryiuw"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_4use2"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_ryiuw"]
+
+[node name="Scrap" type="StaticBody3D" unique_id=491219669]
+script = ExtResource("1_ryiuw")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1372515359]
+shape = SubResource("SphereShape3D_4use2")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=80550434]
+mesh = SubResource("SphereMesh_ryiuw")
